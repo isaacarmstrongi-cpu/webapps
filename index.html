@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Nonprofit Books</title>
+  <meta name="description" content="Simple bookkeeping for small nonprofit organizations.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%232a78d6'/%3E%3Cpath d='M9 22V10h3l8 8v-8h3v12h-3l-8-8v8z' fill='white'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo" aria-hidden="true">N</span>
+      <div>
+        <div class="org-name" id="orgName">My Nonprofit</div>
+        <div class="app-name">Nonprofit Books</div>
+      </div>
+    </div>
+    <nav class="tabs" id="nav" aria-label="Main">
+      <a href="#dashboard" data-view="dashboard">Dashboard</a>
+      <a href="#transactions" data-view="transactions">Transactions</a>
+      <a href="#donors" data-view="donors">Donors</a>
+      <a href="#budget" data-view="budget">Budget</a>
+      <a href="#reports" data-view="reports">Reports</a>
+      <a href="#settings" data-view="settings">Settings</a>
+    </nav>
+  </header>
+
+  <main id="view" tabindex="-1"></main>
+
+  <dialog id="modal">
+    <form method="dialog" id="modalForm" novalidate>
+      <div class="modal-head">
+        <h2 id="modalTitle"></h2>
+        <button type="button" class="icon-btn" data-close aria-label="Close">&times;</button>
+      </div>
+      <div id="modalBody" class="modal-body"></div>
+      <div class="modal-foot" id="modalFoot"></div>
+    </form>
+  </dialog>
+
+  <div id="toast" role="status" aria-live="polite"></div>
+  <div id="tooltip" class="tooltip" hidden></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
