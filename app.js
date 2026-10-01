@@ -143,6 +143,8 @@ function defaultState() {
     transactions: [],
     budgets: {}, // { "2026": { categoryId: cents } } keyed by fiscal-year start year
     reconciliations: [],
+    bankFeed: [],    // transactions imported from bank files, waiting for review or already processed
+    bankRules: [],   // "description contains X → suggest category Y"
     log: [],
   };
 }
@@ -171,6 +173,8 @@ function normalize(s) {
     transactions: s.transactions || [],
     budgets: s.budgets || {},
     reconciliations: s.reconciliations || [],
+    bankFeed: s.bankFeed || [],
+    bankRules: s.bankRules || [],
     log: s.log || [],
   };
   const fill = (list, baseFor) => {
@@ -336,7 +340,7 @@ function lastRecon(accountId) {
 /* =========================================================================
  * Routing & rendering
  * ========================================================================= */
-const views = { dashboard: renderDashboard, transactions: renderTransactions, reconcile: renderReconcile, donors: renderDonors, budget: renderBudget, reports: renderReports, settings: renderSettings };
+const views = { dashboard: renderDashboard, transactions: renderTransactions, bankfeed: renderBankFeed, reconcile: renderReconcile, donors: renderDonors, budget: renderBudget, reports: renderReports, settings: renderSettings };
 const emptyTxFilter = () => ({ q: '', type: '', categoryId: '', fundId: '', accountId: '', from: '', to: '', doc: '', status: '' });
 const ui = {
   txFilter: emptyTxFilter(),
@@ -386,6 +390,9 @@ function statusPill(status, label) {
 function checklistItems() {
   const range = fyRange(fyStartYearFor(todayISO()));
   const items = [];
+  const waiting = state.bankFeed.filter(f => f.status === 'pending').length;
+  if (waiting) items.push({ status: 'warn', text: `${plural(waiting, 'bank transaction')} waiting for review`, action: '<a class="btn small" href="#bankfeed">Review</a>' });
+  else if (state.bankFeed.length) items.push({ status: 'ok', text: 'Bank feed reviewed' });
   const missing = state.transactions.filter(t => t.type === 'expense' && !t.docOnFile && inRange(t, range)).length;
   items.push(missing
     ? { status: 'warn', text: `${plural(missing, 'expense')} this year without a receipt on file`, action: '<button class="btn small" data-action="show-missing-docs">Review</button>' }
@@ -625,6 +632,7 @@ function drawTxTable() {
   const list = filteredTransactions();
   let inc = 0, exp = 0;
   list.forEach(t => { if (t.type === 'income') inc += t.amount; if (t.type === 'expense') exp += t.amount; });
+  const matched = new Set(state.bankFeed.filter(f => f.status === 'matched').map(f => f.txId));
   $('#txTable').innerHTML = `
     <div class="small muted" style="margin-bottom:8px">${plural(list.length, 'transaction')} · Revenue ${money(inc)} · Expenses ${money(exp)} · Net ${money(inc - exp, { sign: true })}</div>
     <div class="table-wrap"><table>
@@ -634,6 +642,7 @@ function drawTxTable() {
           const badges = [
             t.reconciled?.[t.accountId] ? '<span class="pill ok">✓ Reconciled</span>' : t.cleared?.[t.accountId] ? '<span class="pill">Cleared</span>' : '',
             t.type === 'expense' && !t.docOnFile ? '<span class="pill warn">! No receipt</span>' : '',
+            t.source === 'bank' ? '<span class="pill">From bank feed</span>' : matched.has(t.id) ? '<span class="pill">Matched to bank</span>' : '',
             isLocked(t.date) ? '<span class="pill">Closed period</span>' : '',
           ].filter(Boolean).join(' ');
           return `
@@ -744,6 +753,8 @@ function openTxForm(existing, type = 'income') {
       if (reconciled) { alert('This transaction has been reconciled, so it can’t be deleted. Undo the reconciliation first (Reconcile page).'); return false; }
       if (!confirm('Delete this transaction? This cannot be undone.')) return false;
       state.transactions = state.transactions.filter(x => x.id !== existing.id);
+      // a bank item that pointed at this transaction goes back to the review queue
+      state.bankFeed.forEach(f => { if (f.txId === existing.id && f.status !== 'excluded') { f.status = 'pending'; f.txId = ''; } });
       logChange('Deleted', txLabel(orig));
       save(); render(); toast('Transaction deleted');
       return true;
@@ -1803,6 +1814,7 @@ function restoreBackup(file) {
       if (!data || !Array.isArray(data.transactions) || !data.org) throw new Error('Not a backup file');
       if (!confirm('Replace ALL current data with this backup?')) return;
       state = normalize(data);
+      feedUI.stage = null; feedUI.edits = {};
       logChange('Restored backup', file.name);
       save(); render(); toast('Backup restored');
     } catch (e) {
@@ -1898,6 +1910,7 @@ function loadSample() {
   s.budgets = { [cy]: b, [cy - 1]: Object.fromEntries(Object.entries(b).map(([id, v]) => [id, Math.round(v * 0.9)])) };
   s.log = [{ at: new Date().toISOString(), action: 'Loaded sample data', what: 'Riverside Community Garden sample books' }];
   state = s;
+  loadSampleBankFeed();
   save();
 }
 
@@ -1964,7 +1977,7 @@ document.addEventListener('click', e => {
     case 'reset':
       if (!confirm('Erase ALL data in this browser? Download a backup first if you want to keep it.')) return;
       if (!confirm('Are you absolutely sure? This cannot be undone.')) return;
-      state = defaultState(); ui.recon = null; ui.viewRecon = null; save(); render(); return toast('All data erased');
+      state = defaultState(); ui.recon = null; ui.viewRecon = null; feedUI.stage = null; feedUI.edits = {}; save(); render(); return toast('All data erased');
     case 'copy-budget': {
       const y = ui.budgetYear ?? fyStartYearFor(todayISO());
       const prev = state.budgets[y - 1];

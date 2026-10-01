@@ -10,6 +10,7 @@ It runs entirely in your web browser. There is no server, no account to create, 
 |---|---|
 | **Dashboard** | Cash on hand, year-to-date revenue and expenses, a monthly chart, and how spending splits between program, admin, and fundraising |
 | **Transactions** | Record income, expenses, and transfers between bank accounts. Mark whether a receipt is on file. Search, filter, and export to a spreadsheet (CSV) |
+| **Bank Feed** | Import the activity file from your bank (CSV, OFX, QFX or QBO). Each bank transaction is matched to an entry you already recorded, or added as a new one with a suggested category |
 | **Reconcile** | Match your records to each bank statement and save a reconciliation report listing outstanding checks and deposits |
 | **Donors** | Donor list with giving totals, plus a printable **year-end tax receipt letter** for each donor |
 | **Budget** | Enter an annual budget per category and see budget vs. actual with variances |
@@ -42,6 +43,24 @@ Any report can be printed, saved as PDF, or **exported to Excel (CSV)**.
 - **Closing the books:** in Settings, set "Books closed through" a date. Nothing on or before it can be added, edited, or deleted.
 - **Change history:** every add, edit, delete, reconciliation, and period close is logged (an audit trail).
 - **Receipt tracking:** mark each expense "receipt on file". The dashboard checklist shows what's missing.
+
+### Bank feed: bringing in your bank transactions
+
+1. In your bank's website, download the account activity. Choose **QuickBooks (QBO)**, **Quicken (QFX)** or **OFX** if offered, otherwise **CSV**.
+2. In the app, open **Bank Feed**, pick the account, and choose the file. CSV files show a preview so you can check which column is which.
+3. Review each bank transaction:
+   - **Match**: it's already in your books, so the two are linked.
+   - **Add**: it's new. The category is suggested from your **bank rules** ("description contains AMAZON → Office Supplies") or from how you recorded similar entries before.
+   - **Exclude**: it doesn't belong in the books, or it's a duplicate.
+4. **Accept suggested** handles every match and every item that has a suggestion in one click.
+
+Details:
+- Transactions you've already imported are skipped automatically, so it's safe to download overlapping date ranges.
+- Everything matched or added is marked as cleared, which makes bank reconciliation quick.
+- QBO/QFX/OFX files also include your bank balance. The page compares it with your books.
+- The file is read on your computer and never uploaded.
+
+**About automatic (live) bank connections.** Pulling transactions every day without downloading a file needs a paid bank-data service, such as Plaid, which typically charges per connected account. It also needs a small secure server to hold that service's secret keys, which this browser-only app doesn't have. The bank feed above is built so a live connection can feed into the same review screen later.
 
 ### Key ideas, in plain English
 
