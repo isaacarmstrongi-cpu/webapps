@@ -9,19 +9,39 @@ It runs entirely in your web browser. There is no server, no account to create, 
 | Page | What it's for |
 |---|---|
 | **Dashboard** | Cash on hand, year-to-date revenue and expenses, a monthly chart, and how spending splits between program, admin, and fundraising |
-| **Transactions** | Record income, expenses, and transfers between bank accounts. You can search, filter, and export to a spreadsheet (CSV) |
+| **Transactions** | Record income, expenses, and transfers between bank accounts. Mark whether a receipt is on file. Search, filter, and export to a spreadsheet (CSV) |
+| **Reconcile** | Match your records to each bank statement and save a reconciliation report listing outstanding checks and deposits |
 | **Donors** | Donor list with giving totals, plus a printable **year-end tax receipt letter** for each donor |
 | **Budget** | Enter an annual budget per category and see budget vs. actual with variances |
 | **Reports** | See the list below. Each report can be printed or saved as a PDF |
-| **Settings** | Organization info, fiscal year, bank accounts, funds, categories, and backup/restore |
+| **Settings** | Organization info, fiscal year, closing periods, chart of accounts (with account numbers and Form 990 lines), backup/restore, and change history |
 
-The Reports page includes these standard nonprofit statements:
+The Reports page drafts a full set of nonprofit financial statements:
 
-- **Statement of Activities** (the nonprofit version of a profit & loss), with separate columns for money *without* and *with* donor restrictions
+- **Statement of Activities** (the nonprofit version of a profit & loss), with columns for money *without* and *with* donor restrictions and a "net assets released from restrictions" line
 - **Statement of Financial Position** (the nonprofit balance sheet)
+- **Statement of Cash Flows**, using the direct method, with a reconciliation to the change in net assets
 - **Statement of Functional Expenses**, split into program / management & general / fundraising, as on IRS Form 990 Part IX
 - **Fund Activity**, which shows beginning balance, revenue, expenses, and ending balance for each fund
-- **Donor Giving**, a summary for the selected period
+- **Notes to Financial Statements**, a draft filled in from your numbers: accounting policies, liquidity, restricted net assets, and donor concentrations
+
+The four main statements can show **this year next to the prior year**: tick "Compare to prior year".
+
+It also produces the working papers an accountant asks for:
+
+- **Trial Balance**, which lists every account by number and checks that debits equal credits
+- **General Ledger**, which lists every transaction by account with running balances
+- **Form 990 Worksheet**, which totals your categories by IRS Form 990 line (Part VIII revenue, Part IX expenses by function)
+- **Donor Giving**, a summary of gifts by donor
+
+Any report can be printed, saved as PDF, or **exported to Excel (CSV)**.
+
+### Built-in controls accountants look for
+
+- **Bank reconciliation:** each month, tick the items on your bank statement until the difference is $0.00. The app saves a report your accountant can review. Reconciled transactions can't have their amount or date changed by accident.
+- **Closing the books:** in Settings, set "Books closed through" a date. Nothing on or before it can be added, edited, or deleted.
+- **Change history:** every add, edit, delete, reconciliation, and period close is logged (an audit trail).
+- **Receipt tracking:** mark each expense "receipt on file". The dashboard checklist shows what's missing.
 
 ### Key ideas, in plain English
 
@@ -78,6 +98,7 @@ Every time new changes are merged into `main`, the site updates automatically wi
 
 ## Limitations to know about
 
+- The statements are a **draft on the cash basis** and are marked "Draft, unaudited". Have your accountant review them before sharing them as final.
 - It tracks **cash-basis** books: money in and out of bank accounts. Pledges, unpaid bills, and equipment aren't tracked. Your accountant can add those adjustments at year-end.
 - Donor receipt wording is a general template. Have your accountant confirm it meets your needs, especially for gifts where the donor received something in return.
 - This is a helpful tool, not a substitute for professional accounting advice.

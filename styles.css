@@ -197,7 +197,7 @@ dialog::backdrop { background: rgba(0,0,0,.4); }
 #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
 .callout { border-left: 4px solid var(--accent); background: var(--surface-2); padding: 12px 14px; border-radius: 6px; }
-.subtabs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 16px; }
+.subtabs { display: flex; gap: 6px; flex-wrap: wrap; }
 .subtabs button { font: inherit; padding: 6px 12px; border-radius: 999px; border: 1px solid var(--border); background: var(--surface); color: var(--text-2); cursor: pointer; }
 .subtabs button.active { background: var(--text); color: var(--bg); border-color: var(--text); }
 .report-title { text-align: center; margin-bottom: 16px; }
@@ -210,6 +210,37 @@ dialog::backdrop { background: rgba(0,0,0,.4); }
   .stat .value { font-size: 1.3rem; }
   .hide-sm { display: none; }
 }
+
+/* ---------- Accountant features ---------- */
+.code { display: inline-block; min-width: 3.4em; margin-right: 8px; color: var(--text-3); font-variant-numeric: tabular-nums; font-size: .88em; }
+td.indent2 { padding-left: 44px; }
+.pill b { font-weight: 700; }
+.pill.ok { color: var(--good); }
+.pill.warn { color: var(--bad); }
+.pill.info { color: var(--accent); }
+.badges { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 4px; }
+.checklist { list-style: none; margin: 0; padding: 0; }
+.checklist li { display: flex; align-items: center; gap: 10px; padding: 9px 0; border-bottom: 1px solid var(--border); font-size: .92rem; }
+.checklist li .pill { flex: 0 0 auto; min-width: 72px; }
+.checklist .grow { flex: 1; min-width: 0; }
+.recon-grid { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 12px; }
+.recon-grid .label { font-size: .78rem; color: var(--text-2); }
+.recon-grid .value { font-size: 1.15rem; font-weight: 650; font-variant-numeric: tabular-nums; }
+@media (max-width: 900px) { .recon-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+input.tick { width: 18px; height: 18px; }
+.btn[disabled] { opacity: .5; cursor: not-allowed; }
+ol.steps { padding-left: 18px; margin: 0 0 8px; }
+ol.steps li + li { margin-top: 4px; }
+.subtabs { align-items: center; margin-bottom: 10px; }
+.subtabs-label { font-size: .75rem; text-transform: uppercase; letter-spacing: .04em; color: var(--text-3); min-width: 150px; }
+.log-wrap { max-height: 380px; overflow: auto; }
+.notes { max-width: 760px; margin: 0 auto; }
+.notes .note + .note { margin-top: 20px; }
+.notes h3 { margin-bottom: 6px; }
+.notes p { margin: 6px 0; line-height: 1.6; }
+.placeholder { background: var(--surface-2); color: var(--text-2); padding: 0 4px; border-radius: 4px; }
+details summary { cursor: pointer; color: var(--accent); }
+#reportBody h3 { font-size: .95rem; }
 
 /* ---------- Print ---------- */
 @media print {
