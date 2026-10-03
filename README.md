@@ -15,6 +15,7 @@ It runs entirely in your web browser. There is no server, no account to create, 
 | **Donors** | Donor list with giving totals, plus a printable **year-end tax receipt letter** for each donor |
 | **Budget** | Enter an annual budget per category and see budget vs. actual with variances |
 | **Reports** | See the list below. Each report can be printed or saved as a PDF |
+| **Ask Claude** | Ask questions about your books in plain English (needs the Claude AI assistant, below) |
 | **Settings** | Organization info, fiscal year, closing periods, chart of accounts (with account numbers and Form 990 lines), backup/restore, and change history |
 
 The Reports page drafts a full set of nonprofit financial statements:
@@ -76,6 +77,67 @@ Details:
 
   Donors and grantmakers often look at the percentage spent on programs.
 
+## Claude AI assistant (optional)
+
+Four features use Claude, Anthropic's AI:
+
+| Feature | Where | What it does |
+|---|---|---|
+| **Ask Claude** | Ask Claude page | Answers questions like "How are we doing against the budget?" from your actual books |
+| **Board summary** | Reports → "Write board summary with Claude" | Drafts the plain-English summary that goes with the statements in a board packet. It's saved with your books |
+| **Smart categorizing** | Bank Feed → "Ask Claude to categorize" | Suggests category, fund, and function for bank transactions your rules don't cover. Low-confidence guesses are never auto-accepted |
+| **Scan a receipt** | Transactions → "Scan a receipt" | Reads a receipt photo or PDF and fills in the expense form for you to check and save |
+
+Claude can make mistakes. Everything it suggests waits for you to review it, and nothing is added to your books until you click Add or Save.
+
+### How it's connected
+
+The app runs in the browser, which can't keep a secret. So it talks to Claude through a **small server you own** (a free Cloudflare Worker, in the `worker/` folder). The server holds your Anthropic API key, and it only does these four jobs.
+
+```
+Your browser  →  your Cloudflare Worker (holds the API key)  →  Claude
+```
+
+People using the app need two things from you: the Worker's web address and an **access code** you choose. Only your website (set in `worker/wrangler.toml`) can use the Worker.
+
+### Costs
+
+- Each use is billed to your Anthropic account, usually a few cents. The Ask feature sends a copy of your books with each question, so larger books cost a little more per question.
+- Cloudflare Workers are free at this scale.
+- Set a monthly spending limit in the Anthropic Console so there are no surprises.
+
+### One-time setup (about 20 minutes)
+
+1. **Get an Anthropic API key.** Sign up at [console.anthropic.com](https://console.anthropic.com), add a payment method and some credit under Billing, set a monthly limit, then create a key under API Keys. Copy it somewhere safe for a few minutes.
+2. **Create a free Cloudflare account** at [dash.cloudflare.com](https://dash.cloudflare.com/sign-up).
+3. **Install Node.js** (the "LTS" version) from [nodejs.org](https://nodejs.org). This lets your computer run the setup commands.
+4. **Download this project** (green **Code** button → **Download ZIP**, then unzip it).
+5. **Open a terminal in the `worker` folder.** On Windows, open the folder and type `cmd` in the address bar. On a Mac, right-click the folder and choose "New Terminal at Folder".
+6. **Check your website address** in `worker/wrangler.toml`: `ALLOWED_ORIGINS` must be your GitHub Pages address (for example `https://your-name.github.io`). Open the file in any text editor if you need to change it.
+7. **Run these commands one at a time:**
+   ```
+   npm install
+   npx wrangler login
+   npx wrangler deploy
+   npx wrangler secret put ANTHROPIC_API_KEY
+   npx wrangler secret put APP_ACCESS_CODE
+   ```
+   - `wrangler login` opens your browser to approve access to your Cloudflare account.
+   - `wrangler deploy` prints your Worker's address, like `https://nonprofit-books-claude.your-name.workers.dev`.
+   - The two `secret put` commands each ask you to paste a value: first your Anthropic API key, then an access code you make up (a long passphrase, like `tomato-river-garden-42`).
+8. **In the app,** go to **Settings → Claude AI assistant**, enter the Worker's address and the access code, and click **Test connection**.
+
+To change the API key or access code later, run the `secret put` command again. To turn the assistant off, delete the Worker in the Cloudflare dashboard.
+
+### What is shared, and with whom
+
+When you use a Claude feature, the data that feature needs goes from your browser, through your Worker, to Anthropic:
+- **Ask and board summary:** a summary of your books plus recent transactions.
+- **Categorizing:** the bank lines being reviewed.
+- **Receipts:** the receipt you choose.
+
+Nothing is sent until someone uses a Claude feature. The Worker address and access code are stored only in each person's browser and are left out of backups.
+
 ## ⚠️ Important: where your data lives
 
 Your books are saved **inside the web browser on the computer you use**, using the browser's built-in storage. That means:
@@ -114,6 +176,9 @@ Every time new changes are merged into `main`, the site updates automatically wi
 | `index.html` | The page structure (header, navigation, pop-up form) |
 | `styles.css` | Colors, layout, dark mode, and print styles |
 | `app.js` | All the logic: saving data, the pages, calculations, and reports. It's organized into labeled sections |
+| `bankfeed.js` | The Bank Feed page: reading bank files, matching, and suggestions |
+| `ai.js` | The Claude features and the Settings card that connects them |
+| `worker/` | The small Cloudflare server that holds the Anthropic API key (`src/index.js`), its settings (`wrangler.toml`), and its tests (`npm test`) |
 
 ## Limitations to know about
 

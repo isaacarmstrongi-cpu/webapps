@@ -1,0 +1,15 @@
+# Cloudflare Worker that connects Nonprofit Books to Claude.
+# Setup steps are in the main README ("Claude AI assistant").
+name = "nonprofit-books-claude"
+main = "src/index.js"
+compatibility_date = "2026-09-01"
+compatibility_flags = ["nodejs_compat"]
+
+[vars]
+# The web address(es) of your Nonprofit Books site, separated by commas.
+# Only these sites may use this Worker. Example: "https://your-name.github.io"
+ALLOWED_ORIGINS = "https://isaacarmstrongi-cpu.github.io"
+
+# Secrets are NOT stored in this file. Set them with:
+#   npx wrangler secret put ANTHROPIC_API_KEY
+#   npx wrangler secret put APP_ACCESS_CODE

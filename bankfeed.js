@@ -266,7 +266,7 @@ function feedAdd(item) {
   } else {
     const c = byId(state.categories, e.categoryId);
     if (!c) { toast('Choose a category first.'); return false; }
-    t = { ...base, type: e.type, categoryId: c.id, fundId: e.fundId || defaultFund(), accountId: item.accountId, toAccountId: '', func: e.type === 'expense' ? (c.func || 'management') : '', payee: e.type === 'expense' ? desc : '' };
+    t = { ...base, type: e.type, categoryId: c.id, fundId: e.fundId || defaultFund(), accountId: item.accountId, toAccountId: '', func: e.type === 'expense' ? (e.func || c.func || 'management') : '', payee: e.type === 'expense' ? desc : '' };
   }
   state.transactions.push(t);
   item.status = 'added';
@@ -409,6 +409,7 @@ function renderBankFeed(root) {
         <h2>To review <span class="muted">(${pending.length})</span></h2>
         <div class="btn-row" style="align-items:flex-end">
           <label class="field">Show<select data-feed-filter>${`<option value="">All accounts (${pendingAll.length})</option>` + sortByCode(state.accounts).map(a => `<option value="${a.id}"${feedUI.account === a.id ? ' selected' : ''}>${esc(a.name)} (${pendingAll.filter(f => f.accountId === a.id).length})</option>`).join('')}</select></label>
+          <button class="btn" data-ai="categorize"${aiUI.busy ? ' disabled' : ''}>${aiUI.busy === 'categorize' ? 'Claude is thinking…' : 'Ask Claude to categorize'}</button>
           <button class="btn primary" data-feed="accept-all"${plan.length ? '' : ' disabled'}>Accept ${plan.length ? plan.length + ' ' : ''}suggested</button>
         </div>
       </div>
@@ -452,6 +453,8 @@ function renderBankFeed(root) {
     ed[field] = e.target.value;
     ed.mode = ed.mode === 'auto' ? 'edited' : ed.mode;
     ed.via = '';
+    ed.hint = '';
+    if (field === 'categoryId' || field === 'type') ed.func = '';
     if (field === 'type') { ed.categoryId = ''; render(); }
   });
   const stageForm = $('#stageForm');
@@ -489,6 +492,7 @@ function feedRow(item) {
   return `<tr>${head}<td>
     <div class="feed-controls">${typeSel}${detail}</div>
     ${e.via ? `<div class="small muted" style="margin-top:4px">Suggested from ${esc(e.via)}</div>` : ''}
+    ${e.hint ? `<div class="small muted" style="margin-top:4px">${esc(e.hint)}</div>` : ''}
     <div class="btn-row" style="margin-top:6px"><button class="btn small primary" data-feed="add" data-id="${item.id}">Add</button><button class="btn small" data-feed="rule" data-id="${item.id}">Make a rule</button>${exclude}</div>
   </td></tr>`;
 }

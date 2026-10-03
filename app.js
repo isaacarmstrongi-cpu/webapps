@@ -145,6 +145,7 @@ function defaultState() {
     reconciliations: [],
     bankFeed: [],    // transactions imported from bank files, waiting for review or already processed
     bankRules: [],   // "description contains X → suggest category Y"
+    aiSummaries: {}, // board summaries written by Claude, keyed by report period
     log: [],
   };
 }
@@ -175,6 +176,7 @@ function normalize(s) {
     reconciliations: s.reconciliations || [],
     bankFeed: s.bankFeed || [],
     bankRules: s.bankRules || [],
+    aiSummaries: s.aiSummaries || {},
     log: s.log || [],
   };
   const fill = (list, baseFor) => {
@@ -340,7 +342,7 @@ function lastRecon(accountId) {
 /* =========================================================================
  * Routing & rendering
  * ========================================================================= */
-const views = { dashboard: renderDashboard, transactions: renderTransactions, bankfeed: renderBankFeed, reconcile: renderReconcile, donors: renderDonors, budget: renderBudget, reports: renderReports, settings: renderSettings };
+const views = { dashboard: renderDashboard, transactions: renderTransactions, bankfeed: renderBankFeed, ask: renderAsk, reconcile: renderReconcile, donors: renderDonors, budget: renderBudget, reports: renderReports, settings: renderSettings };
 const emptyTxFilter = () => ({ q: '', type: '', categoryId: '', fundId: '', accountId: '', from: '', to: '', doc: '', status: '' });
 const ui = {
   txFilter: emptyTxFilter(),
@@ -600,6 +602,8 @@ function renderTransactions(root) {
       <div><h1>Transactions</h1><div class="muted">Every dollar in and out of your organization.</div></div>
       <div class="btn-row">
         <button class="btn" data-action="export-csv">Export CSV</button>
+        <button class="btn" data-ai="receipt" title="Fill in an expense from a receipt photo or PDF">Scan a receipt</button>
+        <input type="file" id="receiptFile" accept="image/jpeg,image/png,image/webp,image/gif,application/pdf" hidden>
         <button class="btn" data-action="add-tx" data-type="transfer">Transfer</button>
         <button class="btn" data-action="add-tx" data-type="expense">+ Expense</button>
         <button class="btn primary" data-action="add-tx" data-type="income">+ Income</button>
@@ -676,11 +680,12 @@ function diffTx(a, b) {
 }
 
 /* ---------------- Transaction form (modal) ---------------- */
-function openTxForm(existing, type = 'income') {
+function openTxForm(existing, type = 'income', draft = null) {
   const orig = existing ? { ...existing } : null;
   const t = existing ? { ...existing } : {
     id: null, type, date: todayISO(), amount: 0, description: '', categoryId: '', fundId: state.funds.find(f => !f.restricted)?.id || state.funds[0]?.id,
     accountId: state.accounts[0]?.id, toAccountId: state.accounts[1]?.id || '', donorId: '', payee: '', reference: '', func: '', notes: '', docOnFile: false,
+    ...draft,
   };
   const locked = orig && isLocked(orig.date);
   const reconciled = orig && isReconciled(orig);
@@ -689,6 +694,7 @@ function openTxForm(existing, type = 'income') {
     const cats = sortByName(state.categories.filter(c => c.kind === t.type));
     return `
       ${locked ? `<p class="callout small" style="margin-top:0">This transaction is in a closed period (books closed through ${prettyDate(state.org.lockDate)}), so it can't be changed. To change it, reopen the period in Settings.</p>` : ''}
+      ${t._aiNote ? `<p class="callout small" style="margin-top:0">${esc(t._aiNote)}</p>` : ''}
       ${!locked && reconciled ? `<p class="callout small" style="margin-top:0">This transaction has been reconciled to a bank statement. You can change its description, category, fund and notes, but not its date, amount, type, or accounts.</p>` : ''}
       <div style="margin-bottom:14px" class="seg" role="radiogroup" aria-label="Transaction type">
         ${['income', 'expense', 'transfer'].map(x => `<label><input type="radio" name="type" value="${x}"${t.type === x ? ' checked' : ''}>${cap(x)}</label>`).join('')}
@@ -789,6 +795,7 @@ function openTxForm(existing, type = 'income') {
         }
       }
       delete t._donor;
+      delete t._aiNote;
       if (existing) {
         const changes = diffTx(orig, t);
         Object.assign(byId(state.transactions, existing.id), t);
@@ -1270,6 +1277,7 @@ function renderReports(root) {
     <div class="page-head no-print">
       <div><h1>Reports</h1><div class="muted">Draft financial statements and the working papers your accountant will ask for.</div></div>
       <div class="btn-row">
+        <button class="btn" data-ai="report"${aiUI.busy ? ' disabled' : ''}>Write board summary with Claude</button>
         <button class="btn" data-action="export-report">Export to Excel (CSV)</button>
         <button class="btn primary" onclick="window.print()">Print / Save PDF</button>
       </div>
@@ -1286,7 +1294,8 @@ function renderReports(root) {
         <label class="field">To<input type="date" name="to" value="${esc(ui.customRange.to)}"></label>` : ''}
       ${COMPARABLE.has(tab) ? `<label class="check" style="padding-bottom:8px"><input type="checkbox" name="compare"${ui.compare ? ' checked' : ''}${r.from === ALL_TIME_FROM ? ' disabled' : ''}> Compare to prior year</label>` : ''}
     </div>
-    <div class="card" id="reportBody"></div>`;
+    <div class="card" id="reportBody"></div>
+    ${aiSummaryCard(r)}`;
 
   $('#periodFilters').addEventListener('change', e => {
     if (e.target.name === 'period') ui.reportPeriod = e.target.value;
@@ -1667,6 +1676,8 @@ function renderSettings(root) {
         </div>
       </form>
 
+      ${aiSettingsCard()}
+
       <div class="grid grid-2">
         ${listSection('Bank & cash accounts', 'accounts', sortByCode(state.accounts).map(a => `<tr class="clickable" data-edit="accounts:${a.id}"><td>${coded(a)}<div class="small muted">Starting balance ${money(a.opening || 0)}</div></td><td class="num">${money(accountBalance(a.id))}</td></tr>`), 'Where your money is kept. Enter the balance on the day you start using this app.')}
         ${listSection('Funds', 'funds', sortByCode(state.funds).map(f => `<tr class="clickable" data-edit="funds:${f.id}"><td>${coded(f)}<div class="small muted">${f.restricted ? 'With donor restrictions' : 'Without donor restrictions'} · Starting ${money(f.opening || 0)}</div></td><td class="num">${money(fundBalance(f.id))}</td></tr>`), 'Separate money that donors restricted to a specific purpose (e.g. a grant for a youth program) from your general money. The starting balances of your funds should add up to the starting balances of your accounts.')}
@@ -1714,6 +1725,7 @@ function renderSettings(root) {
     save(); render(); toast(d ? `Books closed through ${prettyDate(d)}` : 'All periods reopened');
   });
   $('#restoreFile').addEventListener('change', e => { restoreBackup(e.target.files[0]); e.target.value = ''; });
+  aiBindSettings();
 }
 
 function suggestCode(list) {
