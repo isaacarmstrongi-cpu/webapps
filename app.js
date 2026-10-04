@@ -366,6 +366,13 @@ function render() {
   $$('#nav a').forEach(a => a.classList.toggle('active', a.dataset.view === v));
   hideTooltip();
   views[v]($('#view'));
+  addHelp(helpKeyFor(v));
+}
+/* Which instructions panel fits what the page is showing right now. */
+function helpKeyFor(v) {
+  if (v === 'reconcile') return ui.viewRecon ? null : ui.recon ? 'reconcileWork' : 'reconcile';
+  if (v === 'bankfeed' && feedUI.stage) return 'bankfeedStage';
+  return v;
 }
 window.addEventListener('hashchange', () => { ui.viewRecon = null; render(); $('#view').focus(); window.scrollTo(0, 0); });
 
@@ -1168,6 +1175,7 @@ function renderReceipt(donorId, year) {
       <p>With gratitude,<br><br>${esc(o.signer || '')}<br>${esc(o.name)}</p>
     </div></div>`;
   $('#receiptYear').addEventListener('change', e => renderReceipt(donorId, Number(e.target.value)));
+  addHelp('donorReceipt');
 }
 
 /* ---------------- Budget ---------------- */

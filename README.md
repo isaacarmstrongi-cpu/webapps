@@ -63,6 +63,10 @@ Details:
 
 **About automatic (live) bank connections.** Pulling transactions every day without downloading a file needs a paid bank-data service, such as Plaid, which typically charges per connected account. It also needs a small secure server to hold that service's secret keys, which this browser-only app doesn't have. The bank feed above is built so a live connection can feed into the same review screen later.
 
+### Instructions on every page
+
+Each page opens with a **How to use this page** panel. It gives numbered steps in the order you do them, plus a few "Good to know" tips. Click its heading to fold it away once you know the page; the app remembers that in your browser. The panels never print. The wording lives in `help.js` if you want to change it.
+
 ### Key ideas, in plain English
 
 - **Accounts** are where money physically sits, such as checking, savings, or petty cash.
@@ -176,6 +180,7 @@ Every time new changes are merged into `main`, the site updates automatically wi
 | `index.html` | The page structure (header, navigation, pop-up form) |
 | `styles.css` | Colors, layout, dark mode, and print styles |
 | `app.js` | All the logic: saving data, the pages, calculations, and reports. It's organized into labeled sections |
+| `help.js` | The "How to use this page" instructions shown on each page |
 | `bankfeed.js` | The Bank Feed page: reading bank files, matching, and suggestions |
 | `ai.js` | The Claude features and the Settings card that connects them |
 | `worker/` | The small Cloudflare server that holds the Anthropic API key (`src/index.js`), its settings (`wrangler.toml`), and its tests (`npm test`) |

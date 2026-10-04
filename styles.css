@@ -288,6 +288,22 @@ details summary { cursor: pointer; color: var(--accent); }
 .summary { max-width: 760px; }
 @media (max-width: 640px) { .msg { max-width: 100%; } }
 
+/* ---------- Page instructions ---------- */
+.howto { margin: -6px 0 18px; border: 1px solid var(--border); border-left: 4px solid var(--accent); border-radius: var(--radius); background: var(--surface); }
+.howto summary { display: flex; align-items: center; gap: 10px; padding: 10px 14px; cursor: pointer; font-weight: 600; list-style: none; }
+.howto summary::-webkit-details-marker { display: none; }
+.howto summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: var(--radius); }
+.howto-icon { display: inline-grid; place-items: center; width: 22px; height: 22px; flex: 0 0 22px; border-radius: 50%; background: var(--accent); color: var(--accent-ink); font-size: .8rem; font-weight: 700; }
+.howto-hint { margin-left: auto; font-size: .82rem; font-weight: 400; color: var(--accent); }
+.howto-body { padding: 0 16px 14px 46px; font-size: .92rem; line-height: 1.55; }
+.howto-body ol { margin: 0; padding-left: 18px; }
+.howto-body ol li + li { margin-top: 5px; }
+.howto-tips { margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--border); color: var(--text-2); }
+.howto-tips-label { font-size: .75rem; text-transform: uppercase; letter-spacing: .04em; color: var(--text-3); margin-bottom: 4px; }
+.howto-tips ul { margin: 0; padding-left: 18px; }
+.howto-tips li + li { margin-top: 4px; }
+@media (max-width: 640px) { .howto-body { padding-left: 16px; } }
+
 /* ---------- Print ---------- */
 @media print {
   :root { --bg: #fff; --surface: #fff; --text: #000; --shadow: none; }
