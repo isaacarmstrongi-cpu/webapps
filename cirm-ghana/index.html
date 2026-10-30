@@ -5,26 +5,75 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>CIRM Ghana | Center for Information Resources Management</title>
   <meta name="description" content="Center for Information Resources Management Ghana (CIRM Ghana) works to ensure effective management of information resources in public and private institutions through advocacy, training and research.">
+  <meta name="theme-color" content="#0f5132">
+
+  <!-- How the page looks when the link is shared on WhatsApp, Facebook, LinkedIn, etc. -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="CIRM Ghana | Center for Information Resources Management">
+  <meta property="og:description" content="Advocacy, training and research for effective management of information resources in Ghana's public and private institutions.">
+
+  <!-- Facts about the organization in a format search engines and AI assistants read -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "NGO",
+    "name": "Center for Information Resources Management Ghana LBG",
+    "alternateName": "CIRM Ghana",
+    "description": "Seeks to ensure effective management of information resources in both public and private institutions through advocacy, training and research.",
+    "foundingDate": "2022-03-14",
+    "email": "cirmghana@gmail.com",
+    "telephone": ["+233244666979", "+233541265353"],
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Department of Information Studies, University of Ghana, Botanical Garden Rd.",
+      "addressLocality": "Legon, Accra",
+      "addressRegion": "Greater Accra",
+      "postalCode": "GA-522-3478",
+      "addressCountry": "GH"
+    }
+  }
+  </script>
+
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230f5132'/%3E%3Ctext x='16' y='22' font-family='Georgia,serif' font-size='16' font-weight='700' text-anchor='middle' fill='%23e8b923'%3EC%3C/text%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
+    /* ---------- Colours (light mode) ---------- */
     :root {
       --green: #0f5132;
       --green-dark: #0a3a24;
       --green-soft: #e7f1ec;
       --gold: #e8b923;
       --ink: #1c2420;
-      --muted: #56625c;
+      --muted: #4f5b55;
       --line: #dfe6e2;
       --bg: #fbfaf6;
       --card: #ffffff;
+      --heading: #0a3a24;
+      --link: #0f5132;
+      --header-bg: rgba(251, 250, 246, .94);
+      --field: #ffffff;
       --radius: 14px;
       --max: 1120px;
     }
+    /* ---------- Colours (dark mode, follows the visitor's device setting) ---------- */
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --bg: #0f1512; --card: #17201b; --ink: #e6ede8; --muted: #a9b5ae; --line: #2a3630;
+        --green: #2f8a5f; --green-soft: #131d18; --heading: #d4e9dc; --link: #7fc8a2;
+        --header-bg: rgba(15, 21, 18, .94); --field: #0f1512;
+      }
+    }
+    :root[data-theme="dark"] {
+      --bg: #0f1512; --card: #17201b; --ink: #e6ede8; --muted: #a9b5ae; --line: #2a3630;
+      --green: #2f8a5f; --green-soft: #131d18; --heading: #d4e9dc; --link: #7fc8a2;
+      --header-bg: rgba(15, 21, 18, .94); --field: #0f1512;
+    }
+
     * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
+    html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; } }
     body {
       margin: 0;
       font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -35,64 +84,92 @@
     }
     h1, h2, h3 { font-family: "Fraunces", Georgia, serif; line-height: 1.2; margin: 0 0 .5em; }
     h1 { font-size: clamp(2rem, 5vw, 3.4rem); }
-    h2 { font-size: clamp(1.6rem, 3.5vw, 2.3rem); color: var(--green-dark); }
-    h3 { font-size: 1.25rem; }
+    h2 { font-size: clamp(1.6rem, 3.5vw, 2.3rem); color: var(--heading); }
+    h3 { font-size: 1.2rem; }
     p { margin: 0 0 1em; }
-    a { color: var(--green); }
+    a { color: var(--link); }
+    :focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; border-radius: 4px; }
     .wrap { max-width: var(--max); margin: 0 auto; padding: 0 20px; }
     .eyebrow {
       display: inline-block; font-size: .8rem; font-weight: 600; letter-spacing: .12em;
-      text-transform: uppercase; color: var(--green); margin-bottom: .75rem;
+      text-transform: uppercase; color: var(--link); margin-bottom: .75rem;
     }
+    .skip {
+      position: absolute; left: -9999px; top: 8px; z-index: 100; background: var(--gold);
+      color: #0a3a24; padding: 10px 16px; border-radius: 8px; font-weight: 600;
+    }
+    .skip:focus { left: 8px; }
 
-    /* Header */
+    /* ---------- Header ---------- */
     header.site {
       position: sticky; top: 0; z-index: 10;
-      background: rgba(251, 250, 246, .94); backdrop-filter: blur(8px);
+      background: var(--header-bg); backdrop-filter: blur(8px);
       border-bottom: 1px solid var(--line);
     }
-    .nav { display: flex; align-items: center; justify-content: space-between; height: 68px; }
+    .nav { display: flex; align-items: center; justify-content: space-between; gap: 16px; height: 68px; }
     .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--ink); }
     .mark {
-      width: 40px; height: 40px; border-radius: 10px; background: var(--green);
+      width: 40px; height: 40px; border-radius: 10px; background: #0f5132; flex: none;
       display: grid; place-items: center; color: var(--gold);
       font-family: "Fraunces", Georgia, serif; font-weight: 700; font-size: 1.2rem;
     }
     .brand b { display: block; font-size: 1.05rem; line-height: 1.1; }
     .brand small { display: block; font-size: .72rem; color: var(--muted); line-height: 1.2; }
-    .menu { display: flex; gap: 28px; list-style: none; margin: 0; padding: 0; }
+    .menu { display: flex; align-items: center; gap: 24px; list-style: none; margin: 0; padding: 0; }
     .menu a { text-decoration: none; color: var(--ink); font-weight: 500; font-size: .95rem; }
-    .menu a:hover { color: var(--green); }
+    .menu a:hover { color: var(--link); }
+    .menu a.cta {
+      background: #0f5132; color: #fff; padding: 9px 18px; border-radius: 999px;
+    }
+    .menu a.cta:hover { background: #0a3a24; color: #fff; }
     .menu-btn {
       display: none; background: none; border: 1px solid var(--line); border-radius: 8px;
       padding: 8px 12px; font: inherit; font-size: .9rem; cursor: pointer; color: var(--ink);
     }
 
-    /* Hero */
+    /* ---------- Hero ---------- */
     .hero {
       background:
         radial-gradient(circle at 85% 20%, rgba(232, 185, 35, .18), transparent 40%),
-        linear-gradient(160deg, var(--green-dark), var(--green));
-      color: #fff; padding: 96px 0 104px;
+        linear-gradient(160deg, #0a3a24, #0f5132);
+      color: #fff; padding: 88px 0 0;
     }
     .hero .eyebrow { color: var(--gold); }
-    .hero p.lead { font-size: 1.2rem; max-width: 640px; color: rgba(255,255,255,.88); }
+    .hero p.lead { font-size: 1.2rem; max-width: 640px; color: rgba(255,255,255,.9); }
     .btns { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
     .btn {
       display: inline-block; padding: 13px 24px; border-radius: 999px; font-weight: 600;
       text-decoration: none; font-size: .98rem; transition: transform .15s ease;
     }
     .btn:hover { transform: translateY(-1px); }
-    .btn.gold { background: var(--gold); color: var(--green-dark); }
+    .btn.gold { background: var(--gold); color: #0a3a24; }
     .btn.ghost { border: 1.5px solid rgba(255,255,255,.6); color: #fff; }
+    .btn.solid { background: #0f5132; color: #fff; }
+
+    /* "Start here" audience paths that sit on the bottom edge of the hero */
+    .paths {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+      margin-top: 64px; transform: translateY(50%);
+    }
+    .path {
+      display: block; background: var(--card); color: var(--ink); text-decoration: none;
+      border: 1px solid var(--line); border-radius: var(--radius); padding: 22px 24px;
+      box-shadow: 0 10px 30px rgba(10, 58, 36, .12); transition: transform .15s ease;
+    }
+    .path:hover { transform: translateY(-2px); }
+    .path span { display: block; font-size: .78rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--link); }
+    .path b { display: block; font-family: "Fraunces", Georgia, serif; font-size: 1.15rem; margin: 4px 0; color: var(--heading); }
+    .path em { font-style: normal; color: var(--muted); font-size: .93rem; }
+    .after-paths { padding-top: 150px; }
 
     section { padding: 88px 0; }
     .grid-2 { display: grid; grid-template-columns: 1.1fr .9fr; gap: 56px; align-items: center; }
     .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
 
     .facts {
       background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
-      padding: 28px; display: grid; gap: 18px;
+      padding: 28px; display: grid; gap: 18px; margin: 0;
     }
     .facts div { border-left: 3px solid var(--gold); padding-left: 14px; }
     .facts dt { font-size: .8rem; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
@@ -101,66 +178,129 @@
     .alt { background: var(--green-soft); }
     .card {
       background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
-      padding: 30px;
+      padding: 28px;
     }
+    .card h3 { color: var(--heading); }
+    .card p:last-child { margin-bottom: 0; }
     .icon {
-      width: 48px; height: 48px; border-radius: 12px; background: var(--green);
-      display: grid; place-items: center; margin-bottom: 18px;
+      width: 48px; height: 48px; border-radius: 12px; background: #0f5132;
+      display: grid; place-items: center; margin-bottom: 18px; flex: none;
     }
     .icon svg { width: 24px; height: 24px; stroke: var(--gold); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-    .card ul { padding-left: 1.1em; margin: 0; color: var(--muted); }
+    .card ul { padding-left: 1.1em; margin: 0 0 1em; color: var(--muted); }
     .card li { margin-bottom: .35em; }
-    .section-head { max-width: 680px; margin-bottom: 44px; }
+    .more { font-weight: 600; text-decoration: none; }
+    .more:hover { text-decoration: underline; }
+    .section-head { max-width: 700px; margin-bottom: 44px; }
     .section-head p { color: var(--muted); }
 
-    .serve { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
-    .serve .card h3 { color: var(--green-dark); }
+    /* Why it matters */
+    .why .card { border-top: 4px solid var(--gold); }
+    .why .card p { color: var(--muted); font-size: .96rem; }
 
+    .serve { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+
+    /* Training formats + events box */
+    .formats { display: grid; gap: 16px; }
+    .format { display: flex; gap: 16px; align-items: flex-start; }
+    .format .icon { width: 42px; height: 42px; margin: 0; }
+    .format .icon svg { width: 20px; height: 20px; }
+    .format h3 { margin-bottom: .2em; font-size: 1.1rem; }
+    .format p { color: var(--muted); margin: 0; font-size: .96rem; }
+    .events { background: var(--card); border: 1px dashed var(--green); border-radius: var(--radius); padding: 28px; }
+    .events h3 { color: var(--heading); }
+    .events p { color: var(--muted); }
+
+    /* Resources */
+    .res .card { display: flex; flex-direction: column; }
+    .tag {
+      align-self: flex-start; font-size: .75rem; font-weight: 600; padding: 3px 10px; border-radius: 999px;
+      background: var(--green-soft); color: var(--link); border: 1px solid var(--line); margin-bottom: 14px;
+    }
+    .res .card p { color: var(--muted); flex: 1; }
+
+    /* Get involved */
+    .involve .card { display: flex; flex-direction: column; }
+    .involve .card p { flex: 1; color: var(--muted); }
+
+    /* Leadership */
     .people .card { text-align: center; }
     .avatar {
       width: 76px; height: 76px; border-radius: 50%; margin: 0 auto 16px;
-      background: var(--green-soft); color: var(--green); display: grid; place-items: center;
+      background: var(--green-soft); color: var(--heading); display: grid; place-items: center;
       font-family: "Fraunces", Georgia, serif; font-weight: 700; font-size: 1.5rem;
       border: 2px solid var(--gold);
     }
     .role { color: var(--muted); font-size: .95rem; margin: 0; }
 
+    /* Newsletter strip */
+    .news {
+      background: linear-gradient(160deg, #0a3a24, #0f5132); color: #fff; border-radius: 20px;
+      padding: 44px; display: grid; grid-template-columns: 1.2fr 1fr; gap: 32px; align-items: center;
+    }
+    .news h2 { color: #fff; margin-bottom: .3em; }
+    .news p { color: rgba(255,255,255,.85); margin: 0; }
+    .news form { display: flex; gap: 10px; flex-wrap: wrap; }
+    .news input { flex: 1 1 220px; margin: 0; border: 0; background: #fff; color: #1c2420; }
+    .news button { background: var(--gold); color: #0a3a24; }
+
+    /* Contact */
     .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
     .contact-item { display: flex; gap: 14px; margin-bottom: 22px; }
-    .contact-item .icon { margin: 0; flex: none; width: 42px; height: 42px; }
+    .contact-item .icon { margin: 0; width: 42px; height: 42px; }
     .contact-item .icon svg { width: 20px; height: 20px; }
     .contact-item strong { display: block; }
     .contact-item a { text-decoration: none; }
     .contact-item a:hover { text-decoration: underline; }
-    form { display: grid; gap: 14px; }
+    form.card { display: grid; gap: 14px; }
     label { font-weight: 600; font-size: .9rem; }
-    input, textarea {
+    input, textarea, select {
       width: 100%; padding: 12px 14px; border: 1px solid var(--line); border-radius: 10px;
-      font: inherit; font-size: 1rem; background: #fff; color: var(--ink); margin-top: 4px;
+      font: inherit; font-size: 1rem; background: var(--field); color: var(--ink); margin-top: 4px;
     }
-    input:focus, textarea:focus { outline: 2px solid var(--gold); border-color: var(--green); }
+    input:focus, textarea:focus, select:focus { outline: 2px solid var(--gold); border-color: var(--green); }
     textarea { min-height: 130px; resize: vertical; }
-    button.btn { border: 0; cursor: pointer; font-family: inherit; background: var(--green); color: #fff; justify-self: start; }
+    button.btn { border: 0; cursor: pointer; font-family: inherit; }
+    form.card button.btn { background: #0f5132; color: #fff; justify-self: start; }
     .note { font-size: .85rem; color: var(--muted); margin: 0; }
 
-    footer {
-      background: var(--green-dark); color: rgba(255,255,255,.8); padding: 44px 0; font-size: .92rem;
+    /* Footer */
+    footer { background: #0a3a24; color: rgba(255,255,255,.82); padding: 56px 0 28px; font-size: .92rem; }
+    footer .cols { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 32px; }
+    footer h4 { color: #fff; font-size: .85rem; letter-spacing: .1em; text-transform: uppercase; margin: 0 0 12px; }
+    footer ul { list-style: none; margin: 0; padding: 0; }
+    footer li { margin-bottom: 6px; }
+    footer a { color: rgba(255,255,255,.82); text-decoration: none; }
+    footer a:hover { color: var(--gold); text-decoration: underline; }
+    footer .legal {
+      border-top: 1px solid rgba(255,255,255,.15); margin-top: 36px; padding-top: 20px;
+      display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; font-size: .85rem;
     }
-    footer .row { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 18px; }
-    footer a { color: var(--gold); }
 
+    /* ---------- Phones and small tablets ---------- */
+    @media (max-width: 960px) {
+      .grid-4 { grid-template-columns: repeat(2, 1fr); }
+      .menu { gap: 18px; }
+    }
     @media (max-width: 860px) {
-      .grid-2, .contact-grid, .serve { grid-template-columns: 1fr; gap: 32px; }
-      .grid-3 { grid-template-columns: 1fr; }
+      .grid-2, .contact-grid, .serve, .news, footer .cols { grid-template-columns: 1fr; gap: 32px; }
+      .grid-3, .paths { grid-template-columns: 1fr; }
+      .paths { transform: none; margin: 48px 0 0; padding-bottom: 56px; }
+      .after-paths { padding-top: 64px; }
       .menu-btn { display: block; }
       .menu {
         display: none; position: absolute; top: 68px; left: 0; right: 0;
-        flex-direction: column; gap: 0; background: var(--bg); border-bottom: 1px solid var(--line);
+        flex-direction: column; align-items: stretch; gap: 0; background: var(--bg); border-bottom: 1px solid var(--line);
       }
       .menu.open { display: flex; }
       .menu a { display: block; padding: 14px 20px; border-top: 1px solid var(--line); }
+      .menu a.cta { border-radius: 0; }
       section { padding: 64px 0; }
-      .hero { padding: 72px 0 80px; }
+      .hero { padding-top: 64px; }
+      .news { padding: 28px; }
+    }
+    @media (max-width: 560px) {
+      .grid-4 { grid-template-columns: 1fr; }
     }
     @media (max-width: 420px) {
       .brand small { display: none; }
@@ -168,6 +308,7 @@
   </style>
 </head>
 <body>
+  <a class="skip" href="#main">Skip to main content</a>
 
   <header class="site">
     <div class="wrap nav">
@@ -176,32 +317,55 @@
         <span><b>CIRM Ghana</b><small>Center for Information Resources Management</small></span>
       </a>
       <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="menu">Menu</button>
-      <ul class="menu" id="menu">
-        <li><a href="#about">About</a></li>
-        <li><a href="#work">What we do</a></li>
-        <li><a href="#serve">Who we serve</a></li>
-        <li><a href="#leadership">Leadership</a></li>
-        <li><a href="#contact">Contact</a></li>
-      </ul>
+      <nav aria-label="Main">
+        <ul class="menu" id="menu">
+          <li><a href="#about">About</a></li>
+          <li><a href="#work">What we do</a></li>
+          <li><a href="#training">Training</a></li>
+          <li><a href="#resources">Resources</a></li>
+          <li><a href="#leadership">Leadership</a></li>
+          <li><a href="#contact">Contact</a></li>
+          <li><a class="cta" href="#involved">Partner with us</a></li>
+        </ul>
+      </nav>
     </div>
   </header>
 
-  <main id="top">
+  <main id="main">
     <!-- Hero: the first thing visitors see -->
-    <section class="hero">
+    <section class="hero" id="top">
       <div class="wrap">
         <span class="eyebrow">Center for Information Resources Management Ghana</span>
         <h1>Better information management for stronger institutions.</h1>
         <p class="lead">We work to ensure the effective management of information resources in public and private institutions across Ghana, through advocacy, training and research.</p>
         <div class="btns">
-          <a class="btn gold" href="#work">Our work</a>
-          <a class="btn ghost" href="#contact">Get in touch</a>
+          <a class="btn gold" href="#training">Request training</a>
+          <a class="btn ghost" href="#work">See our work</a>
+        </div>
+
+        <!-- "Start here": one clear path for each kind of visitor -->
+        <div class="paths">
+          <a class="path" href="#training">
+            <span>For institutions</span>
+            <b>Train your staff</b>
+            <em>Workshops and tailored in-house programmes in records and information management.</em>
+          </a>
+          <a class="path" href="#resources">
+            <span>For professionals &amp; students</span>
+            <b>Learn and grow</b>
+            <em>Guides, research findings and events to build your skills.</em>
+          </a>
+          <a class="path" href="#involved">
+            <span>For partners</span>
+            <b>Work with us</b>
+            <em>Collaborate on research, advocacy and capacity building.</em>
+          </a>
         </div>
       </div>
     </section>
 
     <!-- About -->
-    <section id="about">
+    <section id="about" class="after-paths">
       <div class="wrap grid-2">
         <div>
           <span class="eyebrow">About us</span>
@@ -237,6 +401,7 @@
               <li>Public awareness</li>
               <li>Standards and best practice</li>
             </ul>
+            <a class="more" href="#involved">Partner on advocacy &rarr;</a>
           </article>
           <article class="card">
             <div class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M2 8l10-5 10 5-10 5z"/><path d="M6 10v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5"/></svg></div>
@@ -247,6 +412,7 @@
               <li>Records and archives management</li>
               <li>Capacity building for institutions</li>
             </ul>
+            <a class="more" href="#training">Explore training &rarr;</a>
           </article>
           <article class="card">
             <div class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-5-5"/></svg></div>
@@ -257,13 +423,43 @@
               <li>Publications and reports</li>
               <li>Evidence for policy</li>
             </ul>
+            <a class="more" href="#resources">View resources &rarr;</a>
           </article>
         </div>
       </div>
     </section>
 
+    <!-- Why it matters -->
+    <section class="why">
+      <div class="wrap">
+        <div class="section-head">
+          <span class="eyebrow">Why it matters</span>
+          <h2>Good records are good governance</h2>
+          <p>How an institution manages its information affects everyone it serves.</p>
+        </div>
+        <div class="grid-4">
+          <div class="card">
+            <h3>Accountability</h3>
+            <p>Reliable records show what decisions were made, by whom and why, and that is the basis of transparency.</p>
+          </div>
+          <div class="card">
+            <h3>Access to information</h3>
+            <p>The Right to Information Act, 2019 (Act 989) gives the public a right to official information. Meeting it depends on well-organized records.</p>
+          </div>
+          <div class="card">
+            <h3>Data protection</h3>
+            <p>The Data Protection Act, 2012 (Act 843) requires personal data to be handled lawfully and kept secure.</p>
+          </div>
+          <div class="card">
+            <h3>Efficiency &amp; memory</h3>
+            <p>Information that is easy to find saves time and money, and preserves institutional knowledge for the future.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- Who we serve -->
-    <section id="serve">
+    <section id="serve" class="alt">
       <div class="wrap">
         <div class="section-head">
           <span class="eyebrow">Who we serve</span>
@@ -277,6 +473,100 @@
           <div class="card">
             <h3>Private institutions</h3>
             <p>Businesses, NGOs and professional bodies that want to manage their information assets efficiently, securely and in line with the law.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Training & events -->
+    <section id="training">
+      <div class="wrap grid-2" style="align-items:start">
+        <div>
+          <span class="eyebrow">Training &amp; events</span>
+          <h2>Build your team's skills</h2>
+          <p style="color:var(--muted)">We design training around each institution's needs and the realities of Ghana's public and private sectors.</p>
+          <div class="formats">
+            <div class="format">
+              <div class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><path d="M15 20c0-2.5 1-4 3-4.5 2 .5 3 2 3 4.5"/></svg></div>
+              <div><h3>Open workshops</h3><p>Short courses that bring together participants from different institutions.</p></div>
+            </div>
+            <div class="format">
+              <div class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M5 21V8l7-5 7 5v13"/><path d="M10 21v-6h4v6"/></svg></div>
+              <div><h3>In-house training</h3><p>Programmes tailored to your organization and delivered on site.</p></div>
+            </div>
+            <div class="format">
+              <div class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8"/><path d="M12 16v4"/></svg></div>
+              <div><h3>Seminars &amp; webinars</h3><p>Talks and discussions on current issues in information management.</p></div>
+            </div>
+          </div>
+          <div class="btns"><a class="btn solid" href="#contact" data-topic="Training request">Request training for your institution</a></div>
+        </div>
+        <div class="events" aria-labelledby="events-title">
+          <span class="eyebrow">Upcoming events</span>
+          <h3 id="events-title">New dates coming soon</h3>
+          <p>We are planning our next programme of workshops and seminars. Join our mailing list and we'll let you know when dates are announced.</p>
+          <a class="more" href="#newsletter">Get event updates &rarr;</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Resources -->
+    <section id="resources" class="alt res">
+      <div class="wrap">
+        <div class="section-head">
+          <span class="eyebrow">Resources</span>
+          <h2>Research &amp; knowledge</h2>
+          <p>We share what we learn. Publications will be added here as they are released. To ask about our research, get in touch.</p>
+        </div>
+        <div class="grid-3">
+          <div class="card">
+            <span class="tag">Research</span>
+            <h3>Reports &amp; studies</h3>
+            <p>Findings from our studies on how information resources are managed in Ghanaian institutions.</p>
+            <a class="more" href="#contact" data-topic="Research enquiry">Ask about our research &rarr;</a>
+          </div>
+          <div class="card">
+            <span class="tag">Advocacy</span>
+            <h3>Policy briefs</h3>
+            <p>Short, practical recommendations for decision-makers on records, data and information policy.</p>
+            <a class="more" href="#newsletter">Notify me when published &rarr;</a>
+          </div>
+          <div class="card">
+            <span class="tag">Training</span>
+            <h3>Guides &amp; toolkits</h3>
+            <p>Practical guidance that staff can use day to day to manage records and information well.</p>
+            <a class="more" href="#newsletter">Notify me when published &rarr;</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Get involved -->
+    <section id="involved" class="involve">
+      <div class="wrap">
+        <div class="section-head">
+          <span class="eyebrow">Get involved</span>
+          <h2>Partner with us</h2>
+          <p>Better information management is a shared effort. Here is how you can be part of it.</p>
+        </div>
+        <div class="grid-3">
+          <div class="card">
+            <div class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M5 21V8l7-5 7 5v13"/><path d="M10 21v-6h4v6"/></svg></div>
+            <h3>Institutions</h3>
+            <p>Bring us in to train your staff, review your records practices or support an information management project.</p>
+            <a class="more" href="#contact" data-topic="Institutional partnership">Start a conversation &rarr;</a>
+          </div>
+          <div class="card">
+            <div class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V3H6.5A2.5 2.5 0 0 0 4 5.5z"/><path d="M4 19.5A2.5 2.5 0 0 0 6.5 22H20v-5"/></svg></div>
+            <h3>Researchers &amp; academics</h3>
+            <p>Collaborate with us on studies, publications and student projects in information management.</p>
+            <a class="more" href="#contact" data-topic="Research collaboration">Propose a collaboration &rarr;</a>
+          </div>
+          <div class="card">
+            <div class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8z"/></svg></div>
+            <h3>Supporters &amp; funders</h3>
+            <p>Help us reach more institutions by sponsoring training, events or research.</p>
+            <a class="more" href="#contact" data-topic="Supporting CIRM Ghana">Support our work &rarr;</a>
           </div>
         </div>
       </div>
@@ -305,6 +595,24 @@
             <h3>Emmanuel Kwame Cudjoe</h3>
             <p class="role">Secretary</p>
           </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Newsletter / mailing list -->
+    <section id="newsletter" style="padding-bottom:0">
+      <div class="wrap">
+        <div class="news">
+          <div>
+            <h2>Stay informed</h2>
+            <p>Join our mailing list for news on training, events and new research.</p>
+          </div>
+          <!-- Opens the visitor's email app with a "Subscribe" request addressed to CIRM -->
+          <form id="newsForm" aria-label="Join mailing list">
+            <label for="newsEmail" class="sr" style="position:absolute;left:-9999px">Your email</label>
+            <input id="newsEmail" type="email" required placeholder="Your email address" autocomplete="email">
+            <button class="btn" type="submit">Subscribe</button>
+          </form>
         </div>
       </div>
     </section>
@@ -345,7 +653,7 @@
               </div>
             </div>
             <div class="contact-item">
-              <div class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z" stroke="none"/><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></div>
+              <div class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></div>
               <div>
                 <strong>Email</strong>
                 <a href="mailto:cirmghana@gmail.com">cirmghana@gmail.com</a>
@@ -358,6 +666,17 @@
           <form class="card" id="contactForm">
             <div><label for="name">Your name</label><input id="name" name="name" required autocomplete="name"></div>
             <div><label for="email">Your email</label><input id="email" name="email" type="email" required autocomplete="email"></div>
+            <div>
+              <label for="topic">What is it about?</label>
+              <select id="topic" name="topic">
+                <option>General enquiry</option>
+                <option>Training request</option>
+                <option>Research enquiry</option>
+                <option>Research collaboration</option>
+                <option>Institutional partnership</option>
+                <option>Supporting CIRM Ghana</option>
+              </select>
+            </div>
             <div><label for="message">Message</label><textarea id="message" name="message" required></textarea></div>
             <button class="btn" type="submit">Send message</button>
             <p class="note">This opens your email app with your message ready to send to cirmghana@gmail.com.</p>
@@ -368,14 +687,35 @@
   </main>
 
   <footer>
-    <div class="wrap row">
-      <div>
-        <strong style="color:#fff">Center for Information Resources Management Ghana LBG</strong><br>
-        Registered in Ghana &middot; Company No. CG015780322
+    <div class="wrap">
+      <div class="cols">
+        <div>
+          <h4>CIRM Ghana</h4>
+          <p>Center for Information Resources Management Ghana LBG. Advocacy, training and research for effective information management.</p>
+        </div>
+        <div>
+          <h4>Explore</h4>
+          <ul>
+            <li><a href="#about">About us</a></li>
+            <li><a href="#work">What we do</a></li>
+            <li><a href="#training">Training &amp; events</a></li>
+            <li><a href="#resources">Resources</a></li>
+            <li><a href="#involved">Partner with us</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Contact</h4>
+          <ul>
+            <li><a href="mailto:cirmghana@gmail.com">cirmghana@gmail.com</a></li>
+            <li><a href="tel:+233244666979">024 466 6979</a></li>
+            <li><a href="tel:+233541265353">054 126 5353</a></li>
+            <li>Dept. of Information Studies, University of Ghana, Legon</li>
+          </ul>
+        </div>
       </div>
-      <div>
-        <a href="mailto:cirmghana@gmail.com">cirmghana@gmail.com</a><br>
-        &copy; <span id="year">2026</span> CIRM Ghana. All rights reserved.
+      <div class="legal">
+        <span>Registered in Ghana &middot; Company No. CG015780322</span>
+        <span>&copy; <span id="year">2026</span> CIRM Ghana. All rights reserved.</span>
       </div>
     </div>
   </footer>
@@ -392,13 +732,26 @@
       if (e.target.tagName === 'A') { menu.classList.remove('open'); menuBtn.setAttribute('aria-expanded', false); }
     });
 
+    // Links like "Request training" pre-select the matching topic in the contact form
+    document.querySelectorAll('[data-topic]').forEach(link => {
+      link.addEventListener('click', () => { document.getElementById('topic').value = link.dataset.topic; });
+    });
+
     // Contact form: build an email and open it in the visitor's mail app
     document.getElementById('contactForm').addEventListener('submit', e => {
       e.preventDefault();
       const f = e.target;
-      const subject = 'Website enquiry from ' + f.name.value;
+      const subject = f.topic.value + ' from ' + f.name.value;
       const body = f.message.value + '\n\n' + f.name.value + '\n' + f.email.value;
       location.href = 'mailto:cirmghana@gmail.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+    });
+
+    // Mailing list: send a subscribe request by email
+    document.getElementById('newsForm').addEventListener('submit', e => {
+      e.preventDefault();
+      const email = document.getElementById('newsEmail').value;
+      location.href = 'mailto:cirmghana@gmail.com?subject=' + encodeURIComponent('Please add me to the mailing list') +
+        '&body=' + encodeURIComponent('Please add ' + email + ' to the CIRM Ghana mailing list.');
     });
 
     document.getElementById('year').textContent = new Date().getFullYear();
