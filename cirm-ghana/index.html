@@ -517,6 +517,96 @@
     }
     :root[data-theme="dark"] .menu a.cta { background: var(--gold); color: #232830; }
     :root[data-theme="dark"] .icon { background: rgba(219, 169, 58, .14); }
+
+    /* ---------- Hero photo slideshow ---------- */
+    .show {
+      position: relative; border-radius: 20px; overflow: hidden; aspect-ratio: 16 / 11;
+      box-shadow: 0 24px 60px rgba(0,0,0,.35); border: 3px solid rgba(219,169,58,.55); background: #232830;
+    }
+    .show .slide { position: absolute; inset: 0; opacity: 0; transition: opacity .9s ease; }
+    .show .slide.on { opacity: 1; }
+    .show img { width: 100%; height: 100%; object-fit: cover; display: block; transform: scale(1.08); transition: transform 7s ease-out; }
+    .show .slide.on img { transform: scale(1); }
+    .show figcaption {
+      position: absolute; left: 0; right: 0; bottom: 0; padding: 60px 22px 18px;
+      background: linear-gradient(transparent, rgba(20,23,28,.88)); color: #fff;
+    }
+    .show figcaption span { display: inline-block; font-size: .72rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--gold); }
+    .show figcaption b { display: block; font-family: "Outfit", system-ui, sans-serif; font-size: 1.3rem; margin: 2px 0; }
+    .show figcaption em { font-style: normal; font-size: .92rem; color: rgba(255,255,255,.85); }
+    .show-btn {
+      position: absolute; top: 50%; transform: translateY(-50%); z-index: 3; width: 42px; height: 42px; border-radius: 50%;
+      border: 0; background: rgba(255,255,255,.88); color: #232830; cursor: pointer; display: grid; place-items: center;
+      opacity: 0; transition: opacity .2s ease;
+    }
+    .show:hover .show-btn, .show-btn:focus-visible { opacity: 1; }
+    .show-btn svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+    .show-btn.prev { left: 12px; } .show-btn.next { right: 12px; }
+    .dots { position: absolute; top: 14px; right: 14px; z-index: 3; display: flex; gap: 6px; }
+    .dots button { width: 9px; height: 9px; border-radius: 999px; border: 0; padding: 0; background: rgba(255,255,255,.55); cursor: pointer; transition: all .3s ease; }
+    .dots button[aria-current="true"] { width: 26px; background: var(--gold); }
+    .show-bar { position: absolute; left: 0; bottom: 0; height: 3px; background: var(--gold); width: 0; z-index: 3; }
+    .show-bar.run { width: 100%; transition: width linear; }
+    .ai-note { font-size: .74rem; color: rgba(255,255,255,.6); margin: 10px 2px 0; text-align: right; }
+
+    /* ---------- Interactive video ---------- */
+    .film { display: grid; grid-template-columns: 1fr 300px; gap: 22px; align-items: stretch; }
+    .player { position: relative; border-radius: 18px; overflow: hidden; background: #14171c; box-shadow: var(--shadow); aspect-ratio: 16 / 9; }
+    .player video { width: 100%; height: 100%; display: block; object-fit: cover; }
+    .player .overlay {
+      position: absolute; left: 0; right: 0; bottom: 0; padding: 70px 24px 22px;
+      background: linear-gradient(transparent, rgba(20,23,28,.9)); color: #fff;
+      display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; pointer-events: none;
+    }
+    .player .overlay > * { pointer-events: auto; }
+    .player .overlay span { font-size: .75rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--gold); }
+    .player .overlay h3 { color: #fff; font-size: 1.5rem; margin: 2px 0 4px; }
+    .player .overlay p { margin: 0; color: rgba(255,255,255,.85); font-size: .95rem; max-width: 460px; }
+    .player .overlay .btn { flex: none; padding: 10px 18px; font-size: .9rem; }
+    .player .fadeable { transition: opacity .35s ease, transform .35s ease; }
+    .player .fadeable.swap { opacity: 0; transform: translateY(6px); }
+    .big-play {
+      position: absolute; inset: 0; margin: auto; width: 84px; height: 84px; border-radius: 50%; border: 0; cursor: pointer;
+      background: var(--gold); color: #232830; display: grid; place-items: center; box-shadow: 0 0 0 10px rgba(219,169,58,.25);
+      transition: transform .2s ease, opacity .3s ease; z-index: 2;
+    }
+    .big-play:hover { transform: scale(1.06); }
+    .big-play svg { width: 34px; height: 34px; fill: currentColor; margin-left: 5px; }
+    .player.playing .big-play { opacity: 0; pointer-events: none; }
+    .controls {
+      position: absolute; top: 14px; left: 14px; right: 14px; display: flex; align-items: center; gap: 10px; z-index: 2;
+    }
+    .controls button {
+      width: 36px; height: 36px; border-radius: 50%; border: 0; background: rgba(20,23,28,.6); color: #fff; cursor: pointer;
+      display: grid; place-items: center; backdrop-filter: blur(4px);
+    }
+    .controls button svg { width: 16px; height: 16px; fill: currentColor; }
+    .scrub { flex: 1; height: 6px; border-radius: 999px; background: rgba(255,255,255,.25); cursor: pointer; position: relative; }
+    .scrub i { position: absolute; left: 0; top: 0; bottom: 0; width: 0; border-radius: 999px; background: var(--gold); }
+    .scrub b { position: absolute; top: -2px; width: 2px; height: 10px; background: rgba(255,255,255,.7); }
+    .chapters { display: flex; flex-direction: column; gap: 8px; list-style: none; margin: 0; padding: 0; }
+    .chapter {
+      display: grid; grid-template-columns: 76px 1fr; gap: 12px; align-items: center; width: 100%; text-align: left;
+      background: var(--card); border: 1.5px solid var(--line); border-radius: 12px; padding: 7px; cursor: pointer; color: var(--ink);
+      position: relative; overflow: hidden; transition: border-color .2s ease, transform .2s ease;
+    }
+    .chapter:hover { transform: translateX(3px); border-color: var(--gold); }
+    .chapter img { width: 76px; height: 46px; object-fit: cover; border-radius: 8px; display: block; }
+    .chapter b { display: block; font-size: .93rem; }
+    .chapter small { color: var(--muted); font-size: .78rem; }
+    .chapter .fill { position: absolute; left: 0; bottom: 0; height: 3px; width: 0; background: var(--gold); }
+    .chapter[aria-current="true"] { border-color: var(--gold); background: var(--green-soft); }
+    .media-note { font-size: .8rem; color: var(--muted); margin-top: 14px; }
+    @media (max-width: 960px) {
+      .film { grid-template-columns: 1fr; }
+      .chapters { flex-direction: row; overflow-x: auto; padding-bottom: 6px; scroll-snap-type: x mandatory; }
+      .chapters li { flex: 0 0 210px; scroll-snap-align: start; }
+    }
+    @media (max-width: 560px) {
+      .player { aspect-ratio: 4 / 5; }
+      .player .overlay { flex-direction: column; align-items: flex-start; padding: 60px 16px 16px; }
+      .player .overlay h3 { font-size: 1.2rem; }
+    }
   </style>
 </head>
 <body>
@@ -535,6 +625,7 @@
         <nav aria-label="Main">
           <ul class="menu" id="menu">
             <li><a href="#about">About</a></li>
+            <li><a href="#our-work">Our work</a></li>
             <li><a href="#work">What we do</a></li>
             <li><a href="#health-check">Self-check</a></li>
             <li><a href="#training">Training</a></li>
@@ -565,105 +656,44 @@
             <p class="lead">We work to ensure the effective management of information resources in public and private institutions across Ghana, through advocacy, training and research.</p>
             <div class="btns">
               <a class="btn gold" href="#health-check">Take the 2-minute self-check</a>
-              <a class="btn ghost" href="#training" data-topic="Training request">Request training</a>
+              <a class="btn ghost" href="#our-work" id="watchBtn"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>Watch our work</a>
             </div>
           </div>
 
-          <!-- Illustration: scattered documents being organized into a well-kept archive -->
-          <svg class="hero-art" viewBox="0 0 520 440" role="img" aria-label="Illustration of loose documents flowing into an organized archive cabinet, connected by a data network">
-            <defs>
-              <linearGradient id="cab" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#4a5260"/><stop offset="1" stop-color="#2a3038"/></linearGradient>
-              <linearGradient id="glow" x1="0" x2="1"><stop offset="0" stop-color="#dba93a" stop-opacity=".0"/><stop offset=".5" stop-color="#dba93a" stop-opacity=".9"/><stop offset="1" stop-color="#dba93a" stop-opacity=".0"/></linearGradient>
-            </defs>
-            <!-- large faint version of the logo mark (microscope G) -->
-            <g opacity=".07" transform="translate(180 40)">
-              <path d="M200 120 A110 110 0 1 1 90 10" fill="none" stroke="#dba93a" stroke-width="34"/>
-              <rect x="120" y="100" width="110" height="30" fill="#dba93a"/>
-            </g>
-            <!-- soft backdrop circle -->
-            <circle cx="300" cy="230" r="190" fill="#ffffff" opacity=".05"/>
-            <circle cx="300" cy="230" r="140" fill="#ffffff" opacity=".05"/>
-
-            <!-- flowing connection lines from documents to cabinet -->
-            <path class="flow" d="M110 110 C 180 120, 210 170, 255 190" fill="none" stroke="#dba93a" stroke-width="2" opacity=".8"/>
-            <path class="flow" d="M90 250 C 160 250, 200 240, 255 245" fill="none" stroke="#dba93a" stroke-width="2" opacity=".8"/>
-            <path class="flow" d="M120 370 C 180 350, 220 320, 255 300" fill="none" stroke="#dba93a" stroke-width="2" opacity=".8"/>
-
-            <!-- floating documents (left) -->
-            <g class="float-a">
-              <g transform="translate(50 70) rotate(-10)">
-                <rect width="72" height="90" rx="8" fill="#fff"/>
-                <path d="M54 0 v18 h18" fill="#f4eedf"/>
-                <rect x="12" y="24" width="40" height="6" rx="3" fill="#333a45"/>
-                <rect x="12" y="38" width="48" height="5" rx="2.5" fill="#dcdfe3"/>
-                <rect x="12" y="50" width="44" height="5" rx="2.5" fill="#dcdfe3"/>
-                <rect x="12" y="62" width="30" height="5" rx="2.5" fill="#dcdfe3"/>
-              </g>
-            </g>
-            <g class="float-b">
-              <g transform="translate(26 210) rotate(6)">
-                <rect width="70" height="80" rx="8" fill="#fff"/>
-                <rect x="10" y="12" width="50" height="30" rx="4" fill="#f4eedf"/>
-                <polyline points="14,36 26,26 36,32 50,18 56,22" fill="none" stroke="#333a45" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-                <rect x="10" y="52" width="46" height="5" rx="2.5" fill="#dcdfe3"/>
-                <rect x="10" y="63" width="34" height="5" rx="2.5" fill="#dcdfe3"/>
-              </g>
-            </g>
-            <g class="float-c">
-              <g transform="translate(64 330) rotate(-4)">
-                <rect width="64" height="76" rx="8" fill="#fff"/>
-                <circle cx="32" cy="26" r="12" fill="#dba93a"/>
-                <path d="M26 26 l4 4 8-8" fill="none" stroke="#232830" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-                <rect x="12" y="48" width="40" height="5" rx="2.5" fill="#dcdfe3"/>
-                <rect x="12" y="59" width="28" height="5" rx="2.5" fill="#dcdfe3"/>
-              </g>
-            </g>
-
-            <!-- archive cabinet -->
-            <g transform="translate(250 120)">
-              <rect x="0" y="0" width="190" height="250" rx="16" fill="url(#cab)" stroke="#dba93a" stroke-width="2"/>
-              <!-- drawers -->
-              <g>
-                <rect x="16" y="18" width="158" height="62" rx="10" fill="#232830"/>
-                <rect x="70" y="42" width="50" height="10" rx="5" fill="#dba93a"/>
-                <rect x="28" y="28" width="22" height="14" rx="3" fill="#fff" opacity=".9"/>
-              </g>
-              <g>
-                <rect x="16" y="94" width="158" height="62" rx="10" fill="#232830"/>
-                <rect x="70" y="118" width="50" height="10" rx="5" fill="#dba93a"/>
-                <rect x="28" y="104" width="22" height="14" rx="3" fill="#fff" opacity=".9"/>
-              </g>
-              <g>
-                <rect x="16" y="170" width="158" height="62" rx="10" fill="#232830"/>
-                <rect x="70" y="194" width="50" height="10" rx="5" fill="#dba93a"/>
-                <rect x="28" y="180" width="22" height="14" rx="3" fill="#fff" opacity=".9"/>
-              </g>
-              <!-- folders peeking out of the top drawer -->
-              <rect x="120" y="-14" width="34" height="30" rx="4" fill="#dba93a"/>
-              <rect x="100" y="-8" width="34" height="26" rx="4" fill="#fff"/>
-              <rect x="80" y="-4" width="30" height="22" rx="4" fill="#b8322a"/>
-            </g>
-
-            <!-- data network nodes (right) -->
-            <g>
-              <line x1="440" y1="150" x2="480" y2="110" stroke="#dba93a" stroke-width="1.5" opacity=".7"/>
-              <line x1="440" y1="250" x2="490" y2="240" stroke="#dba93a" stroke-width="1.5" opacity=".7"/>
-              <line x1="440" y1="330" x2="475" y2="380" stroke="#dba93a" stroke-width="1.5" opacity=".7"/>
-              <line x1="480" y1="110" x2="490" y2="240" stroke="#ffffff" stroke-width="1" opacity=".25"/>
-              <line x1="490" y1="240" x2="475" y2="380" stroke="#ffffff" stroke-width="1" opacity=".25"/>
-              <circle class="pulse" cx="480" cy="110" r="9" fill="#dba93a"/>
-              <circle class="pulse" cx="490" cy="240" r="7" fill="#ffffff" style="animation-delay:.8s"/>
-              <circle class="pulse" cx="475" cy="380" r="9" fill="#dba93a" style="animation-delay:1.6s"/>
-            </g>
-
-            <!-- magnifying glass (research) -->
-            <g transform="translate(400 30)" class="float-b">
-              <circle cx="26" cy="26" r="20" fill="#ffffff" fill-opacity=".12" stroke="#fff" stroke-width="5"/>
-              <line x1="41" y1="41" x2="58" y2="58" stroke="#fff" stroke-width="7" stroke-linecap="round"/>
-            </g>
-            <!-- glow under cabinet -->
-            <rect x="230" y="388" width="230" height="4" rx="2" fill="url(#glow)"/>
-          </svg>
+          <!-- Photo slideshow of our services (changes every few seconds; arrows, dots and swipe also work) -->
+          <div>
+            <div class="show" id="show" role="region" aria-roledescription="carousel" aria-label="Our services in pictures" tabindex="0">
+              <figure class="slide on" aria-roledescription="slide" aria-label="1 of 6: Teaching professionals">
+                <img src="images/training.jpg" alt="A Ghanaian trainer teaching a records management workshop to professionals in a seminar room" width="1280" height="720">
+                <figcaption><span>Training</span><b>Teaching professionals</b><em>Practical, hands-on workshops in records and information management.</em></figcaption>
+              </figure>
+              <figure class="slide" aria-roledescription="slide" aria-label="2 of 6: Studying information practice">
+                <img src="images/research.jpg" alt="Two Ghanaian researchers examining archival files in a university library" width="1280" height="720" loading="lazy">
+                <figcaption><span>Research</span><b>Studying information practice</b><em>Evidence on how Ghanaian institutions manage their records.</em></figcaption>
+              </figure>
+              <figure class="slide" aria-roledescription="slide" aria-label="3 of 6: Engaging policymakers">
+                <img src="images/advocacy.jpg" alt="A speaker addressing officials at a policy roundtable in Accra" width="1280" height="720" loading="lazy">
+                <figcaption><span>Advocacy</span><b>Engaging policymakers</b><em>Making the case for sound information policy and good governance.</em></figcaption>
+              </figure>
+              <figure class="slide" aria-roledescription="slide" aria-label="4 of 6: Better workflows">
+                <img src="images/process.jpg" alt="A team mapping a records workflow on a whiteboard covered with sticky notes" width="1280" height="720" loading="lazy">
+                <figcaption><span>Process improvement</span><b>Better workflows</b><em>Mapping and streamlining records processes with your team.</em></figcaption>
+              </figure>
+              <figure class="slide" aria-roledescription="slide" aria-label="5 of 6: From paper to digital">
+                <img src="images/digital.jpg" alt="A records officer scanning paper files into a digital records system" width="1280" height="720" loading="lazy">
+                <figcaption><span>Digital records</span><b>From paper to digital</b><em>Helping registries manage digital records with care.</em></figcaption>
+              </figure>
+              <figure class="slide" aria-roledescription="slide" aria-label="6 of 6: Celebrating progress">
+                <img src="images/capacity.jpg" alt="Smiling Ghanaian professionals holding certificates after a training workshop" width="1280" height="720" loading="lazy">
+                <figcaption><span>Capacity building</span><b>Celebrating progress</b><em>Professionals who build lasting skills for their institutions.</em></figcaption>
+              </figure>
+              <button class="show-btn prev" aria-label="Previous photo"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>
+              <button class="show-btn next" aria-label="Next photo"><svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg></button>
+              <div class="dots" role="group" aria-label="Choose a photo"></div>
+              <div class="show-bar" aria-hidden="true"></div>
+            </div>
+            <p class="ai-note">Illustrative images</p>
+          </div>
         </div>
 
         <!-- "Start here": one clear path for each kind of visitor -->
@@ -704,8 +734,47 @@
       </div>
     </section>
 
+
+    <!-- ================= INTERACTIVE VIDEO ================= -->
+    <section id="our-work" class="alt">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <span class="eyebrow">Our work in action</span>
+          <h2>See how we help institutions</h2>
+          <p>Press play, or jump straight to any part of our work using the chapters.</p>
+        </div>
+        <div class="film reveal">
+          <div class="player" id="player">
+            <video id="film" src="video/cirm-ghana-our-work.mp4" poster="images/training.jpg" muted playsinline preload="metadata" aria-label="Video showing CIRM Ghana's training, research, advocacy and process improvement work"></video>
+            <div class="controls">
+              <button id="playBtn" aria-label="Play"><svg viewBox="0 0 24 24" id="playIcon"><path d="M8 5v14l11-7z"/></svg></button>
+              <div class="scrub" id="scrub" role="slider" aria-label="Video position" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" tabindex="0"><i></i></div>
+            </div>
+            <button class="big-play" id="bigPlay" aria-label="Play video"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>
+            <div class="overlay">
+              <div class="fadeable" id="filmText">
+                <span id="filmTag">Training</span>
+                <h3 id="filmTitle">Teaching professionals</h3>
+                <p id="filmDesc">Practical, hands-on workshops in records and information management.</p>
+              </div>
+              <a class="btn gold fadeable" id="filmCta" href="#training" data-topic="Training request">Request training</a>
+            </div>
+          </div>
+          <ul class="chapters" id="chapters" aria-label="Video chapters">
+            <li><button class="chapter" data-i="0"><img src="images/training.jpg" alt="" loading="lazy"><span><b>Training</b><small>Teaching professionals</small></span><i class="fill"></i></button></li>
+            <li><button class="chapter" data-i="1"><img src="images/research.jpg" alt="" loading="lazy"><span><b>Research</b><small>Studying information practice</small></span><i class="fill"></i></button></li>
+            <li><button class="chapter" data-i="2"><img src="images/advocacy.jpg" alt="" loading="lazy"><span><b>Advocacy</b><small>Engaging policymakers</small></span><i class="fill"></i></button></li>
+            <li><button class="chapter" data-i="3"><img src="images/process.jpg" alt="" loading="lazy"><span><b>Process improvement</b><small>Better workflows</small></span><i class="fill"></i></button></li>
+            <li><button class="chapter" data-i="4"><img src="images/digital.jpg" alt="" loading="lazy"><span><b>Digital records</b><small>From paper to digital</small></span><i class="fill"></i></button></li>
+            <li><button class="chapter" data-i="5"><img src="images/capacity.jpg" alt="" loading="lazy"><span><b>Capacity building</b><small>Celebrating progress</small></span><i class="fill"></i></button></li>
+          </ul>
+        </div>
+        <p class="media-note">Images in this video and slideshow are AI-generated illustrations of our services.</p>
+      </div>
+    </section>
+
     <!-- ================= WHAT WE DO (tabs) ================= -->
-    <section id="work" class="alt">
+    <section id="work">
       <div class="wrap">
         <div class="section-head reveal">
           <span class="eyebrow">What we do</span>
@@ -1518,6 +1587,154 @@
       try { await navigator.clipboard.writeText(b.dataset.copy); toast('Copied: ' + b.dataset.copy); }
       catch (e) { toast(b.dataset.copy); }
     }));
+
+    // ---------- Hero photo slideshow ----------
+    (function () {
+      const show = $('#show');
+      const slides = $$('.slide', show);
+      const dotsBox = $('.dots', show);
+      const bar = $('.show-bar', show);
+      const DELAY = 5500;
+      const calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      let i = 0, timer = null, paused = false;
+      slides.forEach((_, k) => {
+        const d = document.createElement('button');
+        d.setAttribute('aria-label', 'Show photo ' + (k + 1));
+        d.addEventListener('click', () => go(k, true));
+        dotsBox.appendChild(d);
+      });
+      const dots = $$('button', dotsBox);
+      function go(n, user) {
+        slides[i].classList.remove('on');
+        i = (n + slides.length) % slides.length;
+        slides[i].classList.add('on');
+        dots.forEach((d, k) => d.setAttribute('aria-current', k === i));
+        if (user) restart(); else runBar();
+      }
+      function runBar() {
+        bar.classList.remove('run'); bar.style.transitionDuration = '0ms'; void bar.offsetWidth;
+        if (!paused && !calm) { bar.style.transitionDuration = DELAY + 'ms'; bar.classList.add('run'); }
+      }
+      function restart() {
+        clearInterval(timer);
+        if (!calm && !paused) timer = setInterval(() => go(i + 1), DELAY);
+        runBar();
+      }
+      $('.prev', show).addEventListener('click', () => go(i - 1, true));
+      $('.next', show).addEventListener('click', () => go(i + 1, true));
+      show.addEventListener('mouseenter', () => { paused = true; restart(); });
+      show.addEventListener('mouseleave', () => { paused = false; restart(); });
+      show.addEventListener('keydown', e => {
+        if (e.key === 'ArrowRight') go(i + 1, true);
+        if (e.key === 'ArrowLeft') go(i - 1, true);
+      });
+      let x0 = null;
+      show.addEventListener('touchstart', e => { x0 = e.touches[0].clientX; }, { passive: true });
+      show.addEventListener('touchend', e => {
+        if (x0 === null) return;
+        const dx = e.changedTouches[0].clientX - x0;
+        if (Math.abs(dx) > 40) go(i + (dx < 0 ? 1 : -1), true);
+        x0 = null;
+      });
+      go(0, true);
+    })();
+
+    // ---------- Interactive video with chapters ----------
+    (function () {
+      const v = $('#film'), player = $('#player');
+      // Each chapter: when it starts in the video (seconds), its text and its call to action
+      const chapters = [
+        { t: 0,    tag: 'Training', title: 'Teaching professionals', desc: 'Practical, hands-on workshops in records and information management.', cta: 'Request training', href: '#contact', topic: 'Training request' },
+        { t: 4.2,  tag: 'Research', title: 'Studying information practice', desc: 'Evidence on how Ghanaian institutions manage their records.', cta: 'Ask about research', href: '#contact', topic: 'Research enquiry' },
+        { t: 8.4,  tag: 'Advocacy', title: 'Engaging policymakers', desc: 'Making the case for sound information policy and good governance.', cta: 'Partner with us', href: '#involved' },
+        { t: 12.6, tag: 'Process improvement', title: 'Better workflows', desc: 'Mapping and streamlining records processes with your team.', cta: 'Improve our processes', href: '#contact', topic: 'Institutional partnership' },
+        { t: 16.8, tag: 'Digital records', title: 'From paper to digital', desc: 'Helping registries manage digital records with care.', cta: 'Take the self-check', href: '#health-check' },
+        { t: 21.0, tag: 'Capacity building', title: 'Celebrating progress', desc: 'Professionals who build lasting skills for their institutions.', cta: 'Join the mailing list', href: '#newsletter' }
+      ];
+      const items = $$('#chapters .chapter');
+      const scrub = $('#scrub');
+      let current = -1;
+      const play = '<path d="M8 5v14l11-7z"/>', pause = '<path d="M7 5h4v14H7zM13 5h4v14h-4z"/>';
+
+      v.addEventListener('loadedmetadata', () => {
+        chapters.forEach(c => {
+          const m = document.createElement('b');
+          m.style.left = (c.t / v.duration * 100) + '%';
+          scrub.appendChild(m);
+        });
+      });
+
+      function setChapter(n) {
+        if (n === current) return;
+        current = n;
+        const c = chapters[n];
+        items.forEach((it, k) => it.setAttribute('aria-current', k === n));
+        const parts = [$('#filmText'), $('#filmCta')];
+        parts.forEach(p => p.classList.add('swap'));
+        setTimeout(() => {
+          $('#filmTag').textContent = c.tag;
+          $('#filmTitle').textContent = c.title;
+          $('#filmDesc').textContent = c.desc;
+          const cta = $('#filmCta');
+          cta.textContent = c.cta;
+          cta.href = c.href;
+          if (c.topic) cta.dataset.topic = c.topic; else delete cta.dataset.topic;
+          parts.forEach(p => p.classList.remove('swap'));
+        }, 250);
+      }
+      function chapterAt(t) {
+        let n = 0;
+        chapters.forEach((c, k) => { if (t >= c.t) n = k; });
+        return n;
+      }
+      v.addEventListener('timeupdate', () => {
+        const t = v.currentTime, n = chapterAt(t);
+        setChapter(n);
+        $('i', scrub).style.width = (t / v.duration * 100) + '%';
+        scrub.setAttribute('aria-valuenow', Math.round(t / v.duration * 100));
+        items.forEach((it, k) => {
+          const start = chapters[k].t, end = k + 1 < chapters.length ? chapters[k + 1].t : v.duration;
+          const pct = t >= end ? 100 : t <= start ? 0 : (t - start) / (end - start) * 100;
+          $('.fill', it).style.width = pct + '%';
+        });
+      });
+      function updateIcon() {
+        const on = !v.paused;
+        player.classList.toggle('playing', on);
+        $('#playIcon').innerHTML = on ? pause : play;
+        $('#playBtn').setAttribute('aria-label', on ? 'Pause' : 'Play');
+      }
+      v.addEventListener('play', updateIcon);
+      v.addEventListener('pause', updateIcon);
+      v.addEventListener('ended', () => { v.currentTime = 0; updateIcon(); });
+      const toggle = () => (v.paused ? v.play() : v.pause());
+      $('#playBtn').addEventListener('click', toggle);
+      $('#bigPlay').addEventListener('click', () => v.play());
+      v.addEventListener('click', toggle);
+      items.forEach((it, k) => it.addEventListener('click', () => {
+        v.currentTime = chapters[k].t + 0.05;
+        setChapter(k);
+        v.play();
+      }));
+      function seekFrom(e) {
+        const r = scrub.getBoundingClientRect();
+        v.currentTime = Math.max(0, Math.min(1, (e.clientX - r.left) / r.width)) * v.duration;
+      }
+      scrub.addEventListener('click', seekFrom);
+      scrub.addEventListener('keydown', e => {
+        if (e.key === 'ArrowRight') v.currentTime = Math.min(v.duration, v.currentTime + 2);
+        if (e.key === 'ArrowLeft') v.currentTime = Math.max(0, v.currentTime - 2);
+      });
+      // Start playing (silently) when the video scrolls into view, pause when it leaves
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        new IntersectionObserver(es => es.forEach(en => {
+          if (en.isIntersecting && en.intersectionRatio > .5) v.play().catch(() => {});
+          else if (!v.paused) v.pause();
+        }), { threshold: [0, .5] }).observe(player);
+      }
+      $('#watchBtn').addEventListener('click', () => setTimeout(() => v.play().catch(() => {}), 600));
+      setChapter(0);
+    })();
 
     $('#year').textContent = new Date().getFullYear();
   </script>
