@@ -143,7 +143,7 @@
     }
     .nav-right { display: flex; align-items: center; gap: 10px; }
     .menu { display: flex; align-items: center; gap: 22px; list-style: none; margin: 0; padding: 0; }
-    .menu a { text-decoration: none; color: var(--ink); font-weight: 500; font-size: .95rem; position: relative; }
+    .menu a { text-decoration: none; color: var(--ink); font-weight: 500; font-size: .95rem; position: relative; white-space: nowrap; }
     .menu a:hover { color: var(--link); }
     .menu a.active:not(.cta)::after {
       content: ""; position: absolute; left: 0; right: 0; bottom: -6px; height: 2px; background: var(--gold); border-radius: 2px;
@@ -462,14 +462,14 @@
     }
 
     /* ---------- Phones and small tablets ---------- */
-    @media (max-width: 1020px) {
+    @media (max-width: 1180px) {
       .menu { gap: 16px; }
       .menu a { font-size: .9rem; }
     }
     @media (max-width: 960px) {
       .grid-4 { grid-template-columns: repeat(2, 1fr); }
     }
-    @media (max-width: 900px) {
+    @media (max-width: 1040px) {
       .menu-btn { display: grid; }
       .menu {
         display: none; position: absolute; top: 76px; left: 0; right: 0;
@@ -503,7 +503,7 @@
       .serve .card { flex-direction: column; }
       .tab { padding: 10px 14px; font-size: .92rem; }
     }
-    @media (max-width: 1100px) {
+    @media (max-width: 1320px) {
       .brand small { display: none; }
     }
     @media (max-width: 420px) {
@@ -523,7 +523,7 @@
       position: relative; border-radius: 20px; overflow: hidden; aspect-ratio: 16 / 11;
       box-shadow: 0 24px 60px rgba(0,0,0,.35); border: 3px solid rgba(219,169,58,.55); background: #232830;
     }
-    .show .slide { position: absolute; inset: 0; opacity: 0; transition: opacity .9s ease; }
+    .show .slide { position: absolute; inset: 0; margin: 0; opacity: 0; transition: opacity .9s ease; }
     .show .slide.on { opacity: 1; }
     .show img { width: 100%; height: 100%; object-fit: cover; display: block; transform: scale(1.08); transition: transform 7s ease-out; }
     .show .slide.on img { transform: scale(1); }
@@ -745,7 +745,10 @@
         </div>
         <div class="film reveal">
           <div class="player" id="player">
-            <video id="film" src="video/cirm-ghana-our-work.mp4" poster="images/training.jpg" muted playsinline preload="metadata" aria-label="Video showing CIRM Ghana's training, research, advocacy and process improvement work"></video>
+            <video id="film" poster="images/training.jpg" muted playsinline preload="metadata" aria-label="Video showing CIRM Ghana's training, research, advocacy and process improvement work">
+              <source src="video/cirm-ghana-our-work.mp4" type="video/mp4">
+              <source src="video/cirm-ghana-our-work.webm" type="video/webm">
+            </video>
             <div class="controls">
               <button id="playBtn" aria-label="Play"><svg viewBox="0 0 24 24" id="playIcon"><path d="M8 5v14l11-7z"/></svg></button>
               <div class="scrub" id="scrub" role="slider" aria-label="Video position" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" tabindex="0"><i></i></div>
